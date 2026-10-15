@@ -2,8 +2,9 @@
 
 An Advantage Air **e-zone** ducted aircon in Apple Home, with as few tiles as possible:
 
-- **Air Conditioner**: tap for on/off. Long-press for Heat/Cool, the setpoint, a 4-step fan speed
-  (Low / Medium / High / Auto), and **Fan Only** and **Dry** toggles.
+- **Air Conditioner**: tap for on/off. Long-press for Heat/Cool and the setpoint. **Fan Only** and **Dry** are
+  switches that run the unit in those modes.
+- **Fan Speed**: tap to step Low → Medium → High → Auto. Long-press for a slider (25/50/75/100 %, 100 % = Auto).
 - **One tile per zone**: tap to open or close it, long-press to set the damper (5 % steps). Zones never start or stop the aircon.
 - **Sleep Timer**: one tap turns the aircon off in 2 hours using the tablet's own countdown, so the tablet shows it too.
 

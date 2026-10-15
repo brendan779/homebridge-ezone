@@ -3,7 +3,7 @@ import { describe, it } from 'node:test';
 
 import { fixture } from './fixture.helpers.ts';
 import {
-  damperStep, fanToPercent, parseAircon, percentToFan, resolveRun, roomTemperature, runOf, titleCase,
+  damperStep, fanToPercent, nextFan, parseAircon, percentToFan, resolveRun, roomTemperature, runOf, titleCase,
 } from './model.ts';
 
 describe('parseAircon', () => {
@@ -82,6 +82,12 @@ describe('sliders', () => {
     }
     assert.equal(percentToFan(1), 'low');
     assert.equal(percentToFan(60), 'medium');
+  });
+
+  it('cycles fan speeds for tile taps', () => {
+    assert.equal(nextFan('low'), 'medium');
+    assert.equal(nextFan('high'), 'auto');
+    assert.equal(nextFan('auto'), 'low');
   });
 
   it('rounds dampers to 5 % steps within 5–100', () => {

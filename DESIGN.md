@@ -5,7 +5,7 @@ things, garage doors, blinds or MyAir/MyAuto features. Agreed with Brendan on 20
 
 ## What Apple Home shows
 
-Two kinds of tile, plus one convenience tile. That is 10 tiles for Brendan's 8 zones (tablet 192.168.0.201, no zone sensors), replacing the 15 that
+An aircon tile, a fan-speed tile, one tile per zone and a sleep timer. That is 11 tiles for Brendan's 8 zones (tablet 192.168.0.201, no zone sensors), replacing the 15 that
 homebridge-myplace created.
 
 ### 1. Air Conditioner (one tile)
@@ -22,8 +22,9 @@ One accessory (category: air conditioner) with three linked services, shown by H
   runs heat or cool, Fan Only when it vents, Dry when it dries. Turning any of them off turns the unit off.
 - Tapping the tile while the unit is off starts it in the last heat/cool mode it ran (the e-zone remembers).
   If Home sends "on" to several services at once (a grouped-tile tap), Heater Cooler wins.
-- **Fan speed** on the Heater Cooler is a 4-stop slider: 25 % Low, 50 % Medium, 75 % High, 100 % Auto.
-  The Fan Only service has Home's own Auto toggle plus the same three speeds.
+- **Fan speed**: iOS 27 Home draws no fan control on an air conditioner, so speed has its own tile (below).
+- **Tested on iOS 27 (2026-10-15)**: Home does not group the linked services into the Air Conditioner tile; Dry
+  shows as its own tile. The Heater Cooler card shows only the dial and the Heat/Cool picker.
 - **Setpoint** 16–32 °C in 1 ° steps (one value for heat and cool, as on the tablet).
 - **Current temperature**: e-zone without zone sensors has no room reading, so the dial's "current" value is the
   setpoint. A zone sensor or the constant zone's sensor is used instead if one exists.
@@ -40,7 +41,15 @@ real room in Home.
   always show what the tablet reports, so if the tablet overrides a close, the tile follows it.
 - A zone with a temperature sensor also gets a temperature reading in the same tile.
 
-### 3. Sleep Timer (one tile)
+### 3. Fan Speed (one tile)
+
+A fan accessory of its own, because Home shows no fan control on the aircon.
+
+- **Tap**: steps Low → Medium → High → Auto → Low. Never turns the aircon on or off.
+- **Long-press**: slider snapping to 25 / 50 / 75 / 100 % (100 % = Auto), plus Home's Auto button if it shows one.
+- Shows On while the aircon runs, so Home's "Fans On" count stays honest.
+
+### 4. Sleep Timer (one tile)
 
 A switch accessory, its own tile so it is one tap from the Home view, Control Center or the Lock Screen.
 

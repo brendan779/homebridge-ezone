@@ -6,7 +6,8 @@ import type { Aircon, ClimateMode } from '../ezone/model.ts';
 export type AccessoryContext =
   | { kind: 'aircon'; uid: string; lastClimateMode?: ClimateMode }
   | { kind: 'zone'; uid: string; zoneId: string }
-  | { kind: 'sleepTimer'; uid: string };
+  | { kind: 'sleepTimer'; uid: string }
+  | { kind: 'fanSpeed'; uid: string };
 
 export type EzoneAccessory = PlatformAccessory<AccessoryContext>;
 

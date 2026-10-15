@@ -214,6 +214,13 @@ export function percentToFan(percent: number): FanSpeed {
   return 'auto';
 }
 
+const FAN_CYCLE: readonly FanSpeed[] = ['low', 'medium', 'high', 'auto'];
+
+/** The speed one tap on the Fan Speed tile moves to: low → medium → high → auto → low. */
+export function nextFan(fan: FanSpeed): FanSpeed {
+  return FAN_CYCLE[(FAN_CYCLE.indexOf(fan) + 1) % FAN_CYCLE.length]!;
+}
+
 /** Rounds a requested damper opening to the tablet's 5 % steps, 5–100. */
 export function damperStep(percent: number): number {
   return Math.min(100, Math.max(5, Math.round(percent / 5) * 5));

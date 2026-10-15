@@ -8,14 +8,15 @@ import type { Aircon } from './ezone/model.ts';
 import { AirconAccessory } from './hap/aircon.ts';
 import { Category } from './hap/common.ts';
 import type { AccessoryContext, EzoneAccessory } from './hap/common.ts';
+import { FanSpeedAccessory } from './hap/fanSpeed.ts';
 import { SleepTimerAccessory } from './hap/sleepTimer.ts';
 import { ZoneAccessory } from './hap/zone.ts';
 import { PLATFORM_NAME, PLUGIN_NAME } from './settings.ts';
 
-type Handler = AirconAccessory | ZoneAccessory | SleepTimerAccessory;
+type Handler = AirconAccessory | FanSpeedAccessory | ZoneAccessory | SleepTimerAccessory;
 
 /**
- * Builds the tiles from what the tablet reports (one Air Conditioner, one per zone, a Sleep Timer) and keeps them
+ * Builds the tiles from what the tablet reports (one Air Conditioner, a Fan Speed, one per zone, a Sleep Timer) and keeps them
  * in step with it.
  */
 export class EzonePlatform implements DynamicPlatformPlugin {
@@ -109,6 +110,9 @@ export class EzonePlatform implements DynamicPlatformPlugin {
 
     const airconAccessory = ensure('aircon', 'Air Conditioner', { kind: 'aircon', uid: aircon.uid }, Category.AIR_CONDITIONER);
     this.handlers.set(airconAccessory.UUID, new AirconAccessory(this.api, airconAccessory, controller, aircon.uid));
+
+    const fanSpeed = ensure('fan-speed', 'Fan Speed', { kind: 'fanSpeed', uid: aircon.uid }, Category.FAN);
+    this.handlers.set(fanSpeed.UUID, new FanSpeedAccessory(this.api, fanSpeed, controller, aircon.uid));
 
     const timer = ensure('sleep-timer', 'Sleep Timer', { kind: 'sleepTimer', uid: aircon.uid }, Category.SWITCH);
     this.handlers.set(timer.UUID, new SleepTimerAccessory(this.api, timer, controller, aircon.uid, config.sleepTimerMinutes));
