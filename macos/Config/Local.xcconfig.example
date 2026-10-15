@@ -1,0 +1,4 @@
+// Copy to Local.xcconfig (git-ignored) and set your Apple Developer team ID: the 10 characters in brackets after
+// your name in Xcode > Settings > Accounts, or the OU field of your "Apple Development" certificate. ./build.sh
+// creates this file for you when it can find exactly one such certificate in your keychain.
+DEVELOPMENT_TEAM = ABCDE12345

@@ -1,0 +1,13 @@
+// Settings shared by every target.
+//
+// Signing uses an Apple Development certificate from your Apple Developer team; a free Personal Team is enough and no
+// provisioning profile is needed. Put your team ID in Local.xcconfig (./build.sh creates it from your certificate).
+
+BUNDLE_ID_PREFIX = io.github.brendan779
+
+CODE_SIGN_STYLE = Manual
+CODE_SIGN_IDENTITY = Apple Development
+PROVISIONING_PROFILE_SPECIFIER =
+ENABLE_HARDENED_RUNTIME = YES
+
+#include? "Local.xcconfig"
