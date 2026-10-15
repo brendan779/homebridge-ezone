@@ -27,6 +27,13 @@ supports the e-zone only: no lights, things, garage doors, blinds or MyAir featu
 
 Options: `sleepTimerMinutes` (default 120), `pollSeconds` (default 10), `port` (default 2025), `aircon` (default `ac1`).
 
+## Mac app
+
+`macos/` holds **Aircon**, a menu bar app for the Mac. Turn on **Mac app** in the plugin settings
+(`"macApp": { "enabled": true }`, port 8583). The plugin then serves `GET /status` and `POST /control` on your local
+network. Anyone on your network can control the aircon through it, just as they can with the tablet. See
+[macos/README.md](macos/README.md).
+
 ## Development
 
 ```bash

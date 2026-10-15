@@ -2,7 +2,7 @@
   "name": "homebridge-ezone",
   "displayName": "Advantage Air e-zone",
   "type": "module",
-  "version": "0.1.1",
+  "version": "0.2.0",
   "private": true,
   "description": "Advantage Air e-zone ducted aircon in Apple Home: one aircon tile with heat, cool, fan-only and dry, a fan-speed tile, a one-tap tile per zone and a sleep timer.",
   "author": "brendan779",
