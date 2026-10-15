@@ -1,8 +1,18 @@
-# Ignore any swap files, cmd5*.js and Cmd5*.js
-*.swp
+# Dependencies and build output
+node_modules/
+dist/
+*.tsbuildinfo
 
-# Ignore node_modules as it gets installed via npm
-node_modules
+# Local-only data: raw inverter captures contain serial numbers
+.local/
 
-# Development files
-*.[0-9]*
+# Homebridge dev instance storage (pairing keys, caches, config with secrets)
+.dev/
+
+# Logs and OS noise
+*.log
+npm-debug.log*
+.DS_Store
+
+# Packed releases
+*.tgz
