@@ -28,6 +28,7 @@ export class AirconAccessory extends AccessoryBase {
 
     const { HEAT, COOL } = Characteristic.TargetHeaterCoolerState;
     climate.getCharacteristic(Characteristic.TargetHeaterCoolerState)
+      .updateValue(COOL) // a fresh service starts at AUTO (0), which the props below don't allow
       .setProps({ validValues: [HEAT, COOL] })
       .onGet(() => this.read((a) => (this.climateMode(a) === 'heat' ? HEAT : COOL)))
       .onSet((value) => controller.setClimateMode(value === HEAT ? 'heat' : 'cool'));
@@ -37,6 +38,7 @@ export class AirconAccessory extends AccessoryBase {
 
     for (const threshold of [Characteristic.CoolingThresholdTemperature, Characteristic.HeatingThresholdTemperature]) {
       climate.getCharacteristic(threshold)
+        .updateValue(24) // fresh services start below the 16 °C minimum
         .setProps({ minValue: MIN_SET_TEMP, maxValue: MAX_SET_TEMP, minStep: 1 })
         .onGet(() => this.read((a) => a.setTemp))
         .onSet((value) => controller.setTemperature(value as number));
