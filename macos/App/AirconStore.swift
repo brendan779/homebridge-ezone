@@ -207,7 +207,10 @@ final class AirconStore {
             switch url.code {
             case .badURL, .unsupportedURL:
                 return String(localized: "Check the Homebridge address in Settings.")
-            case .cannotConnectToHost, .cannotFindHost, .timedOut, .networkConnectionLost, .notConnectedToInternet:
+            case .cannotConnectToHost:
+                // The host answered but nothing listens on that port: the plugin's Mac app address is off.
+                return String(localized: "Homebridge answered, but Mac app access is off. Turn on Mac app in the e-zone plugin settings and restart its bridge.")
+            case .cannotFindHost, .timedOut, .networkConnectionLost, .notConnectedToInternet:
                 return String(localized: "Can't reach Homebridge at \(address).")
             default:
                 break

@@ -452,7 +452,8 @@ private struct ConnectingView: View {
                     .font(.callout)
                     .foregroundStyle(.secondary)
                     .multilineTextAlignment(.center)
-                SettingsLink {
+                    .fixedSize(horizontal: false, vertical: true)
+                OpenSettingsButton {
                     Text("Open Settings")
                 }
                 .buttonStyle(.glass)
@@ -460,6 +461,26 @@ private struct ConnectingView: View {
         }
         .frame(maxWidth: .infinity)
         .padding(.vertical, 24)
+    }
+}
+
+/// Opens Settings from the popover. A menu-bar-only app isn't active, so SettingsLink alone opens nothing visible:
+/// activate first, then open, then bring the Settings window to the front.
+private struct OpenSettingsButton<Label: View>: View {
+    @ViewBuilder let label: () -> Label
+    @Environment(\.openSettings) private var openSettings
+
+    var body: some View {
+        Button {
+            NSApp.activate()
+            openSettings()
+            DispatchQueue.main.async {
+                NSApp.windows.first { $0.identifier?.rawValue.contains("Settings") == true || $0.title.contains("Settings") }?
+                    .makeKeyAndOrderFront(nil)
+            }
+        } label: {
+            label()
+        }
     }
 }
 
@@ -478,7 +499,7 @@ private struct FooterView: View {
                     .lineLimit(1)
             }
             Spacer()
-            SettingsLink {
+            OpenSettingsButton {
                 Image(systemName: "gearshape")
             }
             .buttonStyle(.glass)
