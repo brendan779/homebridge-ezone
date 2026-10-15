@@ -2,7 +2,7 @@ import { applyPatch, buildPatch, emptyChanges, isEmptyPatch } from './changes.ts
 import type { PendingChanges } from './changes.ts';
 import type { EzoneTransport } from './client.ts';
 import { parseAircon } from './model.ts';
-import type { Aircon, ClimateMode, FanSpeed, Run } from './model.ts';
+import type { Aircon, ClimateMode, FanSpeed, Run, UnitMode } from './model.ts';
 
 export interface ControllerOptions {
   aircon: string;
@@ -68,6 +68,16 @@ export class EzoneController {
   setClimateMode(mode: ClimateMode): void {
     this.pending.climateMode = mode;
     this.rememberClimateMode(mode);
+    this.scheduleFlush();
+  }
+
+  /** Mac app mode pick: changes a running unit's mode, or the mode an off unit starts in, without turning it on or off. */
+  setMode(mode: UnitMode): void {
+    this.pending.mode = mode;
+    if (mode === 'heat' || mode === 'cool') {
+      this.pending.climateMode = mode;
+      this.rememberClimateMode(mode);
+    }
     this.scheduleFlush();
   }
 

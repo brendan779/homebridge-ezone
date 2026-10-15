@@ -50,6 +50,25 @@
         "default": "ac1",
         "pattern": "^ac\\d$",
         "description": "Leave as ac1 unless the tablet runs more than one aircon."
+      },
+      "macApp": {
+        "title": "Mac app",
+        "type": "object",
+        "properties": {
+          "enabled": {
+            "title": "Allow the e-zone Mac app",
+            "type": "boolean",
+            "default": false,
+            "description": "Serves status and controls on your local network for the e-zone menu bar app. Anyone on your network can then control the aircon, just as they can with the tablet itself."
+          },
+          "port": {
+            "title": "Port",
+            "type": "integer",
+            "default": 8583,
+            "minimum": 1024,
+            "maximum": 65535
+          }
+        }
       }
     }
   },
@@ -59,9 +78,22 @@
     "sleepTimerMinutes",
     {
       "type": "fieldset",
+      "title": "Mac app",
+      "expandable": true,
+      "items": [
+        "macApp.enabled",
+        "macApp.port"
+      ]
+    },
+    {
+      "type": "fieldset",
       "title": "Advanced",
       "expandable": true,
-      "items": ["port", "pollSeconds", "aircon"]
+      "items": [
+        "port",
+        "pollSeconds",
+        "aircon"
+      ]
     }
   ]
 }

@@ -12,7 +12,11 @@
       "name": "e-zone",
       "host": "127.0.0.1",
       "port": 12025,
-      "pollSeconds": 5
+      "pollSeconds": 5,
+      "macApp": {
+        "enabled": true,
+        "port": 8583
+      }
     }
   ]
 }

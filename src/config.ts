@@ -6,6 +6,8 @@ export interface PluginConfig {
   aircon: string;
   pollSeconds: number;
   sleepTimerMinutes: number;
+  /** Port for the Mac app's status/control address, or null when that's off. */
+  macAppPort: number | null;
 }
 
 export interface ParsedConfig {
@@ -19,6 +21,7 @@ export const DEFAULTS = {
   aircon: 'ac1',
   pollSeconds: 10,
   sleepTimerMinutes: 120,
+  macAppPort: 8583,
 } as const;
 
 /**
@@ -54,6 +57,25 @@ export function parseConfig(raw: Record<string, unknown>): ParsedConfig {
     }
   }
 
+  let macAppPort: number | null = null;
+  const macApp = raw.macApp;
+  if (macApp !== undefined && macApp !== null) {
+    if (typeof macApp !== 'object' || Array.isArray(macApp)) {
+      warnings.push('"macApp" must be an object like { "enabled": true }; Mac app access is off.');
+    } else {
+      const block = macApp as Record<string, unknown>;
+      if (block.enabled === true) {
+        const port = block.port ?? DEFAULTS.macAppPort;
+        if (typeof port === 'number' && Number.isInteger(port) && port >= 1024 && port <= 65535) {
+          macAppPort = port;
+        } else {
+          warnings.push(`"macApp.port" must be a whole number from 1024 to 65535; using ${DEFAULTS.macAppPort}.`);
+          macAppPort = DEFAULTS.macAppPort;
+        }
+      }
+    }
+  }
+
   return {
     config: {
       host,
@@ -61,6 +83,7 @@ export function parseConfig(raw: Record<string, unknown>): ParsedConfig {
       aircon,
       pollSeconds: integer('pollSeconds', DEFAULTS.pollSeconds, 3, 300),
       sleepTimerMinutes: integer('sleepTimerMinutes', DEFAULTS.sleepTimerMinutes, 10, 720),
+      macAppPort,
     },
     warnings,
     errors,

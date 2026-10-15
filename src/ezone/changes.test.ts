@@ -40,6 +40,14 @@ describe('buildPatch', () => {
     assert.deepEqual(buildPatch(changes({ climateMode: 'heat' }), venting, 'cool').info, {});
   });
 
+  it('a Mac app mode pick switches a running unit, or only sets the mode of an off one', () => {
+    const running = { ...off(), power: true, mode: 'cool' as const };
+    assert.deepEqual(buildPatch(changes({ mode: 'dry' }), running, 'cool').info, { mode: 'dry' });
+    assert.deepEqual(buildPatch(changes({ mode: 'heat' }), off(), 'cool').info, { mode: 'heat' });
+    assert.deepEqual(buildPatch(changes({ mode: 'cool' }), off(), 'cool').info, {});
+    assert.deepEqual(buildPatch(changes({ mode: 'vent', runs: ['vent'] }), off(), 'cool').info, { state: 'on', mode: 'vent' });
+  });
+
   it('sends auto fan the way the tablet wants it', () => {
     const high = { ...off(), fan: 'high' as const };
     assert.deepEqual(buildPatch(changes({ fan: 'auto' }), high, 'cool').info, { fan: 'auto' });

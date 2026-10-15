@@ -5,6 +5,8 @@ import type { Aircon, ClimateMode, FanSpeed, Run, UnitMode } from './model.ts';
 export interface PendingChanges {
   runs: Run[];
   climateMode?: ClimateMode;
+  /** A mode picked in the Mac app: switches a running unit to it, or sets the mode an off unit will start in. */
+  mode?: UnitMode;
   fan?: FanSpeed;
   setTemp?: number;
   offCountdown?: number;
@@ -51,8 +53,14 @@ export function buildPatch(changes: PendingChanges, current: Aircon, lastClimate
       }
       break;
     case undefined:
-      // A Heat/Cool pick on its own only changes a unit that is already heating or cooling.
-      if (changes.climateMode !== undefined && runningClimate) {
+      if (changes.mode !== undefined) {
+        if (current.power) {
+          targetMode = changes.mode;
+        } else if (changes.mode !== current.mode) {
+          info.mode = changes.mode;
+        }
+      } else if (changes.climateMode !== undefined && runningClimate) {
+        // A Heat/Cool pick on its own only changes a unit that is already heating or cooling.
         targetMode = changes.climateMode;
       }
       break;

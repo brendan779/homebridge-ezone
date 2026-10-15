@@ -4,9 +4,10 @@ import { parseConfig } from './config.ts';
 import type { PluginConfig } from './config.ts';
 import { EzoneClient } from './ezone/client.ts';
 import { EzoneController } from './ezone/controller.ts';
+import { ControlServer } from './feed/server.ts';
 import type { Aircon } from './ezone/model.ts';
 import { AirconAccessory } from './hap/aircon.ts';
-import { Category } from './hap/common.ts';
+import { Category, STALE_AFTER_MS } from './hap/common.ts';
 import type { AccessoryContext, EzoneAccessory } from './hap/common.ts';
 import { FanSpeedAccessory } from './hap/fanSpeed.ts';
 import { SleepTimerAccessory } from './hap/sleepTimer.ts';
@@ -26,6 +27,7 @@ export class EzonePlatform implements DynamicPlatformPlugin {
   private readonly cached = new Map<string, EzoneAccessory>();
   private readonly handlers = new Map<string, Handler>();
   private controller: EzoneController | null = null;
+  private server: ControlServer | null = null;
   private layout = '';
 
   constructor(log: Logging, config: PlatformConfig, api: API) {
@@ -41,7 +43,10 @@ export class EzonePlatform implements DynamicPlatformPlugin {
     }
 
     api.on('didFinishLaunching', () => this.start());
-    api.on('shutdown', () => this.controller?.stop());
+    api.on('shutdown', () => {
+      this.controller?.stop();
+      this.server?.stop();
+    });
   }
 
   configureAccessory(accessory: PlatformAccessory): void {
@@ -72,6 +77,17 @@ export class EzonePlatform implements DynamicPlatformPlugin {
     });
     this.log.info(`Connecting to the e-zone tablet at ${config.host}:${config.port}.`);
     this.controller.start();
+
+    if (config.macAppPort !== null) {
+      this.server = new ControlServer({
+        port: config.macAppPort,
+        controller: this.controller,
+        sleepTimerMinutes: config.sleepTimerMinutes,
+        staleAfterMs: STALE_AFTER_MS,
+        log: this.log,
+      });
+      void this.server.start();
+    }
   }
 
   private update(aircon: Aircon): void {
