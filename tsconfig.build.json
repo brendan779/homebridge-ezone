@@ -1,0 +1,12 @@
+{
+  // Emits the published dist/ from src only; tests and test helpers never reach the package.
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "noEmit": false,
+    "outDir": "dist",
+    "rootDir": "src",
+    "sourceMap": true
+  },
+  "include": ["src"],
+  "exclude": ["src/**/*.test.ts", "src/**/*.helpers.ts"]
+}

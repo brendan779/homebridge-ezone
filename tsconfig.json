@@ -1,0 +1,28 @@
+{
+  // Type-check project for the IDE, typescript-eslint and `npm run typecheck`: covers sources and the colocated tests.
+  // Emitting dist/ is tsconfig.build.json's job. Sources use .ts import specifiers so `node --test` can run them directly
+  // (Node type stripping); `rewriteRelativeImportExtensions` turns those into .js in the emitted output.
+  "compilerOptions": {
+    "allowImportingTsExtensions": true,
+    "erasableSyntaxOnly": true,
+    "forceConsistentCasingInFileNames": true,
+    "isolatedModules": true,
+    "lib": ["ES2024"],
+    "module": "nodenext",
+    "moduleResolution": "nodenext",
+    "noEmit": true,
+    "noFallthroughCasesInSwitch": true,
+    "noImplicitOverride": true,
+    "noImplicitReturns": true,
+    "noUncheckedIndexedAccess": true,
+    "noUncheckedSideEffectImports": true,
+    "resolveJsonModule": true,
+    "rewriteRelativeImportExtensions": true,
+    "skipLibCheck": true,
+    "strict": true,
+    "target": "ES2024",
+    "types": ["node"],
+    "verbatimModuleSyntax": true
+  },
+  "include": ["src", "scripts", "eslint.config.js"]
+}

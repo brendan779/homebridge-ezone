@@ -1,0 +1,18 @@
+{
+  "bridge": {
+    "name": "e-zone Test",
+    "username": "0E:5D:45:5A:4E:01",
+    "port": 51862,
+    "pin": "031-45-277"
+  },
+  "description": "Runs the plugin against scripts/mock-ezone.ts (npm run mock -- --port 12025 --fast). Copied to .dev/mock/config.json by `npm run dev:mock`.",
+  "platforms": [
+    {
+      "platform": "EZone",
+      "name": "e-zone",
+      "host": "127.0.0.1",
+      "port": 12025,
+      "pollSeconds": 5
+    }
+  ]
+}
