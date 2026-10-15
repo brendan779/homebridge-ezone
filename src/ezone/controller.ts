@@ -164,6 +164,13 @@ export class EzoneController {
     if (aircon.mode === 'heat' || aircon.mode === 'cool') {
       this.rememberClimateMode(aircon.mode);
     }
+    if (aircon.errorCode !== (this.state?.errorCode ?? '')) {
+      if (aircon.errorCode === '') {
+        this.options.log.info('The aircon fault has cleared.');
+      } else {
+        this.options.log.error(`The aircon reports fault "${aircon.errorCode}". Check the e-zone tablet.`);
+      }
+    }
     this.state = aircon;
     this.options.onUpdate(aircon);
   }

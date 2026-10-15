@@ -11,14 +11,15 @@ describe('parseAircon', () => {
     const aircon = parseAircon(fixture(), 'ac1');
     assert.equal(aircon.power, false);
     assert.equal(aircon.mode, 'cool');
-    assert.equal(aircon.fan, 'high');
+    assert.equal(aircon.fan, 'auto');
     assert.equal(aircon.setTemp, 20);
     assert.deepEqual(aircon.zones.map((z) => z.name), [
-      'Bed 3', 'Bed 4', 'Lounge', 'Master Bed', 'Media', 'Rumpus', 'Sitting', 'Winters Room',
+      'Lounge', 'Sitting', 'Media', 'Rumpus', 'Master Bed', 'Winters Room', 'Bed 3', 'Bed 4',
     ]);
-    assert.deepEqual(aircon.zones.filter((z) => z.open).map((z) => z.id), ['z04', 'z06']);
+    assert.deepEqual(aircon.zones.filter((z) => z.open).map((z) => z.id), ['z04', 'z05']);
     assert.equal(aircon.zones[0]?.constant, true);
-    assert.equal(aircon.zones[1]?.constant, false);
+    assert.equal(aircon.zones[1]?.constant, true);
+    assert.equal(aircon.zones[2]?.constant, false);
     assert.ok(aircon.zones.every((z) => z.temperature === null));
   });
 
@@ -49,8 +50,8 @@ describe('room temperature', () => {
   it('prefers the constant zone sensor, else averages sensors', () => {
     const data = fixture();
     const zones = data.aircons!.ac1!.zones!;
-    Object.assign(zones.z02!, { type: 1, rssi: 40, measuredTemp: 24 });
-    Object.assign(zones.z03!, { type: 1, rssi: 40, measuredTemp: 25 });
+    Object.assign(zones.z03!, { type: 1, rssi: 40, measuredTemp: 24 });
+    Object.assign(zones.z06!, { type: 1, rssi: 40, measuredTemp: 25 });
     assert.equal(roomTemperature(parseAircon(data, 'ac1')), 24.5);
     Object.assign(zones.z01!, { type: 1, rssi: 40, measuredTemp: 22.3 });
     assert.equal(roomTemperature(parseAircon(data, 'ac1')), 22.3);
@@ -93,5 +94,6 @@ describe('sliders', () => {
   it('title-cases tablet names', () => {
     assert.equal(titleCase('WINTERS  ROOM'), 'Winters Room');
     assert.equal(titleCase('TV RM'), 'TV RM');
+    assert.equal(titleCase('McKenzie Room'), 'McKenzie Room');
   });
 });

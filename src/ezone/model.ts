@@ -72,8 +72,11 @@ function str(value: unknown, fallback: string): string {
   return typeof value === 'string' ? value : fallback;
 }
 
-/** "MASTER BED" → "Master Bed". Keeps short all-caps words such as "TV". */
+/** "MASTER BED" → "Master Bed". Keeps short all-caps words such as "TV", and names already in mixed case. */
 export function titleCase(name: string): string {
+  if (name !== name.toUpperCase()) {
+    return name.trim().replace(/\s+/g, ' ');
+  }
   return name
     .trim()
     .split(/\s+/)

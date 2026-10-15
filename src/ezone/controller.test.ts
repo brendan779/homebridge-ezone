@@ -109,7 +109,7 @@ describe('EzoneController', () => {
     const { tablet, controller, updates } = setup();
     await controller.poll();
     const before = updates.length;
-    controller.setFan('high');
+    controller.setFan('auto');
     await controller.flush();
     controller.stop();
     assert.equal(tablet.writes.length, 0);

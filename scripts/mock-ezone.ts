@@ -1,7 +1,6 @@
 // A stand-in e-zone tablet for development: serves getSystemData and setAircon on localhost.
 //   node scripts/mock-ezone.ts [--port 2025] [--fixture test/fixtures/eight-zones-no-sensors.json] [--fast]
-// --fast runs the off-countdown at one minute per second. Constant zones ignore "close", like the real tablet
-// keeping them open. State lives in memory only.
+// --fast runs the off-countdown at one minute per second. State lives in memory only.
 import { readFileSync } from 'node:fs';
 import { createServer } from 'node:http';
 import { parseArgs } from 'node:util';
@@ -42,15 +41,10 @@ function setAircon(change: Json): void {
         aircon.info.countDownToOff = 0;
       }
     }
-    const constants = [aircon.info.constant1, aircon.info.constant2, aircon.info.constant3];
     for (const [id, zoneChange] of Object.entries(zones ?? {})) {
       const zone = aircon.zones[id];
       if (zone === undefined) {
         throw new Error(`no zone ${id}`);
-      }
-      if (zoneChange.state === 'close' && constants.includes(zone.number)) {
-        console.log(`  ${id} is a constant zone: staying open`);
-        delete zoneChange.state;
       }
       Object.assign(zone, zoneChange);
     }

@@ -5,7 +5,7 @@ things, garage doors, blinds or MyAir/MyAuto features. Agreed with Brendan on 20
 
 ## What Apple Home shows
 
-Two kinds of tile, plus one convenience tile. That is 10 tiles for Brendan's 8 zones, replacing the 15 that
+Two kinds of tile, plus one convenience tile. That is 10 tiles for Brendan's 8 zones (tablet 192.168.0.201, no zone sensors), replacing the 15 that
 homebridge-myplace created.
 
 ### 1. Air Conditioner (one tile)
@@ -27,7 +27,7 @@ One accessory (category: air conditioner) with three linked services, shown by H
 - **Setpoint** 16–32 °C in 1 ° steps (one value for heat and cool, as on the tablet).
 - **Current temperature**: e-zone without zone sensors has no room reading, so the dial's "current" value is the
   setpoint. A zone sensor or the constant zone's sensor is used instead if one exists.
-- **Fault**: a non-empty `airconErrorCode` sets the tile's fault badge.
+- **Faults**: a non-empty `airconErrorCode` is logged (Heater Cooler has no fault characteristic Home shows).
 
 ### 2. One tile per zone
 
@@ -36,7 +36,8 @@ real room in Home.
 
 - **Tap**: open/close the zone. Independent of the aircon: it never starts or stops the unit.
 - **Long-press**: damper opening, 5–100 % in 5 % steps. Dragging to 0 closes the zone.
-- The **constant zone** can't be closed on the e-zone; if Home closes it, the tile springs back open.
+- Brendan's tablet has two **constant zones** (Lounge, Sitting) that report closed while the unit is off. The tiles
+  always show what the tablet reports, so if the tablet overrides a close, the tile follows it.
 - A zone with a temperature sensor also gets a temperature reading in the same tile.
 
 ### 3. Sleep Timer (one tile)

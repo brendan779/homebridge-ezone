@@ -41,9 +41,10 @@ describe('buildPatch', () => {
   });
 
   it('sends auto fan the way the tablet wants it', () => {
-    assert.deepEqual(buildPatch(changes({ fan: 'auto' }), off(), 'cool').info, { fan: 'auto' });
-    assert.deepEqual(buildPatch(changes({ fan: 'auto' }), { ...off(), autoFanValue: 'autoAA' }, 'cool').info, { fan: 'autoAA' });
-    assert.deepEqual(buildPatch(changes({ fan: 'high' }), off(), 'cool').info, {});
+    const high = { ...off(), fan: 'high' as const };
+    assert.deepEqual(buildPatch(changes({ fan: 'auto' }), high, 'cool').info, { fan: 'auto' });
+    assert.deepEqual(buildPatch(changes({ fan: 'auto' }), { ...high, autoFanValue: 'autoAA' }, 'cool').info, { fan: 'autoAA' });
+    assert.deepEqual(buildPatch(changes({ fan: 'auto' }), off(), 'cool').info, {});
   });
 
   it('clamps the setpoint and skips unchanged values', () => {
@@ -55,12 +56,12 @@ describe('buildPatch', () => {
     const zones = new Map([
       ['z02', { open: true }],
       ['z04', { open: false }],
-      ['z06', { damper: 43, open: true }],
+      ['z05', { damper: 43, open: true }],
       ['z99', { open: true }],
     ]);
     const patch = buildPatch(changes({ zones }), off(), 'cool');
     assert.deepEqual(patch.info, {});
-    assert.deepEqual(patch.zones, { z02: { state: 'open' }, z04: { state: 'close' }, z06: { value: 45 } });
+    assert.deepEqual(patch.zones, { z02: { state: 'open' }, z04: { state: 'close' }, z05: { value: 45 } });
   });
 });
 
